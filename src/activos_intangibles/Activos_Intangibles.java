@@ -18,7 +18,9 @@ public class Activos_Intangibles {
         System.out.println("");
         
         
+        int suma, n1 , n2;
         
+       
         
         
         
