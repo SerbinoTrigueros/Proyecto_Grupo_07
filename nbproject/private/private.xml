@@ -5,10 +5,10 @@
         <group>
             <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/Login_screen.java</file>
             <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/main_menu_screen.java</file>
-            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/view_table_gestion.java</file>
-            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/create_license.java</file>
-            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/menu_gestion_license.java</file>
-            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Activos_Intangibles.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/gestion_license/create_license.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/gestion_license/delete_license.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/gestion_license/menu_gestion_license.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/gestion_license/view_table_gestion.java</file>
         </group>
     </open-files>
 </project-private>

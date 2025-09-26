@@ -42,7 +42,7 @@ public class main_menu_screen extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Gestión y Administración");
 
-        jButton1.setText("entrar");
+        jButton1.setText("Entrar");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrador de Informacion Contable" }));
 

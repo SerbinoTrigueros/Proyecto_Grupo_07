@@ -85,7 +85,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="entrar"/>
+        <Property name="text" type="java.lang.String" value="Entrar"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBox1">
