@@ -65,7 +65,7 @@ public class Login_screen extends javax.swing.JFrame {
                     .addComponent(jTextField1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addGap(0, 137, Short.MAX_VALUE))
+                        .addGap(0, 279, Short.MAX_VALUE))
                     .addComponent(jPasswordField1))
                 .addContainerGap())
         );
@@ -84,7 +84,7 @@ public class Login_screen extends javax.swing.JFrame {
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addComponent(jButton1)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         pack();
