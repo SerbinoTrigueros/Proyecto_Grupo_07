@@ -4,6 +4,9 @@
  */
 package activos_intangibles.Interfaz;
 
+import activos_intangibles.Interfaz.gestion_license.menu_gestion_license;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author serbi
@@ -34,17 +37,22 @@ public class main_menu_screen extends javax.swing.JFrame {
         buttonGroup6 = new javax.swing.ButtonGroup();
         buttonGroup7 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jbtnEntrar = new javax.swing.JButton();
+        jcbGestion_Administracion = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Gestión y Administración");
 
-        jButton1.setText("Entrar");
+        jbtnEntrar.setText("Entrar");
+        jbtnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnEntrarActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrador de Informacion Contable" }));
+        jcbGestion_Administracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrador de Informacion Contable" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,10 +63,10 @@ public class main_menu_screen extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbGestion_Administracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(111, 111, 111)
-                                .addComponent(jButton1))))
+                                .addComponent(jbtnEntrar))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addComponent(jLabel1)))
@@ -70,14 +78,33 @@ public class main_menu_screen extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addComponent(jLabel1)
                 .addGap(47, 47, 47)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbGestion_Administracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jbtnEntrar)
                 .addGap(32, 32, 32))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEntrarActionPerformed
+       //falta agregar el menu de la administracion contable
+       
+        String opcionSeleccionada = (String) jcbGestion_Administracion.getSelectedItem();
+
+    if (opcionSeleccionada.equals("Gestion de Licencias")) {
+        menu_gestion_license gestion = new menu_gestion_license();
+        gestion.setVisible(true);
+        // cierra el menú principal
+        this.dispose(); 
+
+    } else if (opcionSeleccionada.equals("Administrador de Informacion Contable")) {
+        JOptionPane.showMessageDialog(this, "Módulo aún no disponible."); /*<------------ falta agregar el menu de administracion contable*/
+    } else {
+        JOptionPane.showMessageDialog(this, "Por favor seleccione una opción válida.");
+    }
+           
+    }//GEN-LAST:event_jbtnEntrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,8 +149,8 @@ public class main_menu_screen extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
     private javax.swing.ButtonGroup buttonGroup7;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jbtnEntrar;
+    private javax.swing.JComboBox<String> jcbGestion_Administracion;
     // End of variables declaration//GEN-END:variables
 }

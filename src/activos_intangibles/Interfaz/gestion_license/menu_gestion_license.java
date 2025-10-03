@@ -4,6 +4,12 @@
  */
 package activos_intangibles.Interfaz.gestion_license;
 
+import activos_intangibles.Interfaz.gestion_license.create_license;
+import activos_intangibles.Interfaz.gestion_license.delete_license;
+import activos_intangibles.Interfaz.gestion_license.update_license;
+import activos_intangibles.Interfaz.gestion_license.view_table_gestion;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author serbi
@@ -26,18 +32,23 @@ public class menu_gestion_license extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcbCRUD = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jbtnEntrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ver Licencias", "Crear Licencia", "Eliminar Licencia", "Actualizar Licencia" }));
+        jcbCRUD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ver Licencias", "Crear Licencia", "Eliminar Licencia", "Actualizar Licencia" }));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Menu de Gestion de Licencias");
 
-        jButton1.setText("Entrar");
+        jbtnEntrar.setText("Entrar");
+        jbtnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnEntrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -46,9 +57,9 @@ public class menu_gestion_license extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(jbtnEntrar)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbCRUD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -57,14 +68,52 @@ public class menu_gestion_license extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addComponent(jLabel1)
                 .addGap(37, 37, 37)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbCRUD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
-                .addComponent(jButton1)
+                .addComponent(jbtnEntrar)
                 .addContainerGap(99, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEntrarActionPerformed
+
+        String opcionCRUD = (String) jcbCRUD.getSelectedItem();
+
+    switch (opcionCRUD) {
+        case "Crear Licencia":
+            create_license crear = new create_license();
+            crear.setVisible(true);
+            this.dispose();
+            break;
+
+        case "Ver Licencias":
+            view_table_gestion ver = new view_table_gestion();
+            ver.setVisible(true);
+            this.dispose();
+            break;
+
+        case "Actualizar Licencia":
+            update_license actualizar = new update_license();
+            actualizar.setVisible(true);
+            this.dispose();
+            break;
+
+        case "Eliminar Licencia":
+            delete_license eliminar = new delete_license();
+            eliminar.setVisible(true);
+            this.dispose();
+            break;
+
+        default:
+            JOptionPane.showMessageDialog(this, "Seleccione una opción válida.");
+            break;
+    }
+     
+ 
+        
+    }//GEN-LAST:event_jbtnEntrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -103,8 +152,8 @@ public class menu_gestion_license extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jbtnEntrar;
+    private javax.swing.JComboBox<String> jcbCRUD;
     // End of variables declaration//GEN-END:variables
 }
