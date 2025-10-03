@@ -15,16 +15,8 @@ public class Activos_Intangibles {
      */
     public static void main(String[] args) {
      
-        System.out.println("");
-        int n1, n2;
-        
-        
-        System.out.println("frodo se la come");
-        ///
-        ///5
-        ///
-        System.out.println("12345467899");
-        
+       
+
         
         
     }
