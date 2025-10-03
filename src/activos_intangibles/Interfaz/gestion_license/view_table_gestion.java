@@ -23,6 +23,12 @@ public class view_table_gestion extends javax.swing.JFrame {
      */
     public view_table_gestion() {
         initComponents();
+        
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnAtrasActionPerformed(evt);
+        }
+    });
     }
 
     /**
@@ -37,6 +43,7 @@ public class view_table_gestion extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtMostrar = new javax.swing.JTable();
         btnMostrar = new javax.swing.JButton();
+        btnAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -264,28 +271,32 @@ public class view_table_gestion extends javax.swing.JFrame {
             }
         });
 
+        btnAtras.setText("Volver");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(397, 397, 397)
-                        .addComponent(btnMostrar)))
-                .addContainerGap(83, Short.MAX_VALUE))
+                        .addComponent(btnMostrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAtras))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(btnMostrar)
-                .addGap(47, 47, 47))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMostrar)
+                    .addComponent(btnAtras))
+                .addContainerGap())
         );
 
         pack();
@@ -335,12 +346,17 @@ public class view_table_gestion extends javax.swing.JFrame {
         });
         
     }
-    
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {
+    this.dispose();  // Cierra la ventana actual
+
+    menu_gestion_license menu = new menu_gestion_license();
+    menu.setVisible(true);  // al darle click al boton de atras nos manda al menu de la gestion
+}
     
 private void cargarDatosEnTabla() {
     DefaultTableModel modelo = new DefaultTableModel();
 
-    // Define las columnas que se van a mostrar en el JTable
+    // Define las columnas que se van a mostrar en el JTable y se guardan en la BD
     modelo.addColumn("Licencia");
     modelo.addColumn("Costo");
     modelo.addColumn("Fecha de Compra");
@@ -383,6 +399,7 @@ private void cargarDatosEnTabla() {
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnMostrar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtMostrar;

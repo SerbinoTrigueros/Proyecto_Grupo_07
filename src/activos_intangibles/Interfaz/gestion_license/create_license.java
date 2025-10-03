@@ -56,7 +56,7 @@ public class create_license extends javax.swing.JFrame {
         txtLibros = new javax.swing.JTextField();
         txtPendiente = new javax.swing.JTextField();
         button1 = new java.awt.Button();
-        button2 = new java.awt.Button();
+        btnCancelar = new java.awt.Button();
         jcbLicencia = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -85,7 +85,12 @@ public class create_license extends javax.swing.JFrame {
             }
         });
 
-        button2.setLabel("Cancelar");
+        btnCancelar.setLabel("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jcbLicencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Microsoft Office", "MySQL", "SQL Server", "Windows", "SAP", "Visual Studio" }));
 
@@ -124,7 +129,7 @@ public class create_license extends javax.swing.JFrame {
                             .addComponent(txtLibros)
                             .addComponent(txtPendiente)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jcbLicencia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(44, 44, 44))
@@ -164,7 +169,7 @@ public class create_license extends javax.swing.JFrame {
                     .addComponent(txtPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47))
         );
@@ -254,6 +259,13 @@ public class create_license extends javax.swing.JFrame {
 
     }//GEN-LAST:event_button1ActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       this.dispose();  // Cierra la ventana actual
+
+    menu_gestion_license menu = new menu_gestion_license();
+    menu.setVisible(true);  // Abre la ventana de menú de gestión
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -290,8 +302,8 @@ public class create_license extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Button btnCancelar;
     private java.awt.Button button1;
-    private java.awt.Button button2;
     private com.toedter.calendar.JCalendar jCalendar1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
