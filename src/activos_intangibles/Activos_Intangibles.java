@@ -19,7 +19,7 @@ public class Activos_Intangibles {
         int n1, n2;
         
         
-     
+        System.out.println("frodo se la come");
         
         
         
