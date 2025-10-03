@@ -24,6 +24,15 @@ public class Activos_Intangibles {
 "Lo más bonito que he visto en toda mi vida\n" +
 "Yo sé que nunca te lo he dicho y me da miedo confesar\n" +
 "Pero antes quiero besarte");
+        
+        
+        int suma;
+        int a = 1;
+        int b= 44;
+        
+        suma = a + b;
+        
+        System.out.println(suma);
     }
     
 }
