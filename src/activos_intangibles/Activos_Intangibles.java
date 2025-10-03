@@ -4,6 +4,9 @@
  */
 package activos_intangibles;
 
+import activos_intangibles.Interfaz.Login_screen;
+import javax.swing.UIManager;
+
 /**
  *
  * @author serbi
@@ -15,7 +18,17 @@ public class Activos_Intangibles {
      */
     public static void main(String[] args) {
      
-        
+        // Para que se vea con el estilo de tu sistema operativo (opcional)
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+           
+        }
+
+        // Mostrar el login
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login_screen().setVisible(true); 
+        });
     }
     
 }
