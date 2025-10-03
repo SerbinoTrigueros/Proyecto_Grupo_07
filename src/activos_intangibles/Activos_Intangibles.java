@@ -33,6 +33,7 @@ public class Activos_Intangibles {
         suma = a + b;
         
         System.out.println(suma);
+        System.out.println("Prueba de r");
     }
     
 }
