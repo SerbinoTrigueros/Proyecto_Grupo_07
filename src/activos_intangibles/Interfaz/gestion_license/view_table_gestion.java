@@ -4,6 +4,14 @@
  */
 package activos_intangibles.Interfaz.gestion_license;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author serbi
@@ -27,11 +35,12 @@ public class view_table_gestion extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtMostrar = new javax.swing.JTable();
+        btnMostrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtMostrar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -246,15 +255,27 @@ public class view_table_gestion extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtMostrar);
+
+        btnMostrar.setText("Mostrar Datos");
+        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(397, 397, 397)
+                        .addComponent(btnMostrar)))
                 .addContainerGap(83, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -262,11 +283,19 @@ public class view_table_gestion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addComponent(btnMostrar)
+                .addGap(47, 47, 47))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
+          
+        cargarDatosEnTabla();
+    
+    }//GEN-LAST:event_btnMostrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -304,10 +333,60 @@ public class view_table_gestion extends javax.swing.JFrame {
                 new view_table_gestion().setVisible(true);
             }
         });
+        
+    }
+    
+    
+private void cargarDatosEnTabla() {
+    DefaultTableModel modelo = new DefaultTableModel();
+
+    // Define las columnas que se van a mostrar en el JTable
+    modelo.addColumn("Licencia");
+    modelo.addColumn("Costo");
+    modelo.addColumn("Fecha de Compra");
+    modelo.addColumn("Fecha de Fin");
+    modelo.addColumn("Vida");
+    modelo.addColumn("Libros");
+    modelo.addColumn("Pendiente");
+
+    try {
+        Connection con = DriverManager.getConnection(
+            "jdbc:postgresql://localhost:5433/Activos_Intangibles", // ubicacion de la conexion
+            "postgres",                                              // Usuario de donde eh creado la base de datos
+            "255623"                                                 // Contraseña de la base de datos que es Activos_Intangibles
+        );
+
+        Statement st = con.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes FROM licencia");
+
+
+        while (rs.next()) {
+            modelo.addRow(new Object[] {
+        rs.getString("tipolicencia"),
+        rs.getDouble("costo"),
+        rs.getDate("fechacompra"),
+        rs.getDate("fechafin"),
+        rs.getString("vidautil"),
+        rs.getString("valorenlibros"),
+        rs.getString("valorpendientes")
+    });
+        }
+
+        jtMostrar.setModel(modelo);
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
     }
 
+
+}
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMostrar;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtMostrar;
     // End of variables declaration//GEN-END:variables
 }
+
+

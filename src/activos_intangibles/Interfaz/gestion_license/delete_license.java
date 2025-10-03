@@ -4,17 +4,37 @@
  */
 package activos_intangibles.Interfaz.gestion_license;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author serbi
  */
 public class delete_license extends javax.swing.JFrame {
 
+    private javax.swing.JButton btnEliminar;
+private javax.swing.JScrollPane jScrollPane1;
+private javax.swing.JTable jtVista;
+    
     /**
      * Creates new form delete_license
      */
     public delete_license() {
-        initComponents();
+          initComponents();
+    cargarDatosEnTabla();
+    // Agregar listener al botón eliminar
+    btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            eliminarLicenciaSeleccionada();
+        }
+    });
     }
 
     /**
@@ -28,7 +48,7 @@ public class delete_license extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jtVista = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,7 +73,7 @@ public class delete_license extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtVista);
 
-        jButton1.setText("Elliminar");
+        btnEliminar.setText("Elliminar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,7 +85,7 @@ public class delete_license extends javax.swing.JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnEliminar)
                 .addGap(335, 335, 335))
         );
         layout.setVerticalGroup(
@@ -74,7 +94,7 @@ public class delete_license extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(btnEliminar)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -109,16 +129,112 @@ public class delete_license extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new delete_license().setVisible(true);
+         java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new delete_license().setVisible(true);
+        }
+    }); 
+} 
+    
+                 
+    private void cargarDatosEnTabla() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("id");  // Asegúrate de incluir la columna clave
+        modelo.addColumn("Tipo Licencia");
+        modelo.addColumn("Costo");
+        modelo.addColumn("Fecha Compra");
+        modelo.addColumn("Fecha Fin");
+        modelo.addColumn("Vida Util");
+        modelo.addColumn("Valor en Libros");
+        modelo.addColumn("Valor pendiente");
+
+        try {
+            Connection con = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5433/Activos_Intangibles",
+                "postgres",
+                "255623"
+            );
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT idlicencia,tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes FROM licencia");
+
+            while (rs.next()) {
+                modelo.addRow(new Object[] {
+                     rs.getString("idlicencia"),
+                    rs.getString("tipolicencia"),
+                    rs.getDouble("costo"),
+                    rs.getDate("fechacompra"),
+                    rs.getDate("fechafin"),
+                    rs.getInt("vidautil"),
+                    rs.getDouble("valorenlibros"),
+                    rs.getDouble("valorpendientes")
+                });
             }
-        });
+
+            jtVista.setModel(modelo);
+
+            st.close();
+            con.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+        }
     }
 
+    private void eliminarLicenciaSeleccionada() {
+       
+    int filaSeleccionada = jtVista.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una licencia para eliminar.");
+        return;
+    }
+
+    try {
+        
+        String idStr = jtVista.getValueAt(filaSeleccionada, 0).toString();
+        int idLicencia = Integer.parseInt(idStr);
+
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Estás seguro que quieres eliminar la licencia con ID " + idLicencia + "?",
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        Connection con = DriverManager.getConnection(
+            "jdbc:postgresql://localhost:5433/Activos_Intangibles",
+            "postgres",
+            "255623"
+        );
+
+        String sql = "DELETE FROM licencia WHERE idlicencia = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idLicencia);
+
+        int resultado = ps.executeUpdate();
+
+        if (resultado > 0) {
+            JOptionPane.showMessageDialog(this, "Licencia eliminada correctamente.");
+            cargarDatosEnTabla();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo eliminar la licencia.");
+        }
+
+        ps.close();
+        con.close();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "ID inválido: " + e.getMessage());
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar licencia: " + e.getMessage());
+    }
+}
+    
+}
+/*
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtVista;
     // End of variables declaration//GEN-END:variables
-}
+}*/

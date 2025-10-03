@@ -199,9 +199,9 @@ public class create_license extends javax.swing.JFrame {
             check.setInt(1, idusuario);
             java.sql.ResultSet rs = check.executeQuery();
             if (!rs.next()) {
-                System.out.println(">>> ❌ En esta conexión NO existe el usuario con idusuario = " + idusuario);
+                System.out.println("❌ En esta conexión NO existe el usuario con idusuario = " + idusuario);
             } else {
-                System.out.println(">>> ✅ Usuario encontrado: " + rs.getString("nombre"));
+                System.out.println("✅ Usuario encontrado: " + rs.getString("nombre"));
             }
             rs.close();
             check.close();
