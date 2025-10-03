@@ -8,6 +8,9 @@ import activos_intangibles.Interfaz.gestion_license.create_license;
 import activos_intangibles.Interfaz.gestion_license.delete_license;
 import activos_intangibles.Interfaz.gestion_license.update_license;
 import activos_intangibles.Interfaz.gestion_license.view_table_gestion;
+import activos_intangibles.Interfaz.main_menu_screen;
+
+
 import javax.swing.JOptionPane;
 
 /**
@@ -35,18 +38,27 @@ public class menu_gestion_license extends javax.swing.JFrame {
         jcbCRUD = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jbtnEntrar = new javax.swing.JButton();
+        btnAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GESTION LICENSE\n");
 
         jcbCRUD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ver Licencias", "Crear Licencia", "Eliminar Licencia", "Actualizar Licencia" }));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setText("Menu de Gestion de Licencias");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setText("Gestion Licencias");
 
         jbtnEntrar.setText("Entrar");
         jbtnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnEntrarActionPerformed(evt);
+            }
+        });
+
+        btnAtras.setText("Atras");
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
             }
         });
 
@@ -57,21 +69,26 @@ public class menu_gestion_license extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtnEntrar)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbtnEntrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAtras))
                     .addComponent(jLabel1)
                     .addComponent(jcbCRUD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addComponent(jcbCRUD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(jbtnEntrar)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addGap(87, 87, 87)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnEntrar)
+                    .addComponent(btnAtras))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -115,6 +132,16 @@ public class menu_gestion_license extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jbtnEntrarActionPerformed
 
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // Abrir la pantalla principal
+    main_menu_screen menu = new main_menu_screen();
+    menu.setVisible(true);
+    menu.setLocationRelativeTo(null); // Centrar
+
+    // Cerrar la actual
+    dispose();
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -152,6 +179,7 @@ public class menu_gestion_license extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtras;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jbtnEntrar;
     private javax.swing.JComboBox<String> jcbCRUD;
