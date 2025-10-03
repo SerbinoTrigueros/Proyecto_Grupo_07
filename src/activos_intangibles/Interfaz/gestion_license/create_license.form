@@ -34,7 +34,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="95" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -58,17 +58,17 @@
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jDateChooser2" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jTextField2" max="32767" attributes="0"/>
-                          <Component id="jTextField3" max="32767" attributes="0"/>
-                          <Component id="jDateChooser3" max="32767" attributes="0"/>
-                          <Component id="jTextField4" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextField5" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jdcFechaCompra" alignment="1" max="32767" attributes="0"/>
+                          <Component id="txtCosto" max="32767" attributes="0"/>
+                          <Component id="txtVida" max="32767" attributes="0"/>
+                          <Component id="jdcFin" max="32767" attributes="0"/>
+                          <Component id="txtLibros" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtPendiente" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="button2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jComboBox1" max="32767" attributes="0"/>
+                          <Component id="jcbLicencia" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -84,37 +84,37 @@
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jcbLicencia" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField2" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCosto" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <Component id="jDateChooser2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jdcFechaCompra" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtVida" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                  <Component id="jDateChooser3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jdcFin" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField4" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLibros" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField5" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtPendiente" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="60" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -170,29 +170,32 @@
         <Property name="text" type="java.lang.String" value="Valor Pendientes:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="txtCosto">
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser2">
+    <Component class="com.toedter.calendar.JDateChooser" name="jdcFechaCompra">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField3">
+    <Component class="javax.swing.JTextField" name="txtVida">
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser3">
+    <Component class="com.toedter.calendar.JDateChooser" name="jdcFin">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField4">
+    <Component class="javax.swing.JTextField" name="txtLibros">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField5">
+    <Component class="javax.swing.JTextField" name="txtPendiente">
     </Component>
     <Component class="java.awt.Button" name="button1">
       <Properties>
         <Property name="label" type="java.lang.String" value="Guardar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="java.awt.Button" name="button2">
       <Properties>
         <Property name="label" type="java.lang.String" value="Cancelar"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="jcbLicencia">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="6">

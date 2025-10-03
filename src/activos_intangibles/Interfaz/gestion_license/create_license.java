@@ -4,6 +4,19 @@
  */
 package activos_intangibles.Interfaz.gestion_license;
 
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Date;
+
+
 /**
  *
  * @author serbi
@@ -36,15 +49,15 @@ public class create_license extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jTextField3 = new javax.swing.JTextField();
-        jDateChooser3 = new com.toedter.calendar.JDateChooser();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtCosto = new javax.swing.JTextField();
+        jdcFechaCompra = new com.toedter.calendar.JDateChooser();
+        txtVida = new javax.swing.JTextField();
+        jdcFin = new com.toedter.calendar.JDateChooser();
+        txtLibros = new javax.swing.JTextField();
+        txtPendiente = new javax.swing.JTextField();
         button1 = new java.awt.Button();
         button2 = new java.awt.Button();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcbLicencia = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,10 +79,15 @@ public class create_license extends javax.swing.JFrame {
         jLabel8.setText("Valor Pendientes:");
 
         button1.setLabel("Guardar");
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1ActionPerformed(evt);
+            }
+        });
 
         button2.setLabel("Cancelar");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Microsoft Office", "MySQL", "SQL Server", "Windows", "SAP", "Visual Studio" }));
+        jcbLicencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Microsoft Office", "MySQL", "SQL Server", "Windows", "SAP", "Visual Studio" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,7 +98,7 @@ public class create_license extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(75, 75, 75)
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 95, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -99,16 +117,16 @@ public class create_license extends javax.swing.JFrame {
                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(32, 32, 32)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jDateChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5)
+                            .addComponent(jdcFechaCompra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCosto)
+                            .addComponent(txtVida)
+                            .addComponent(jdcFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtLibros)
+                            .addComponent(txtPendiente)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jcbLicencia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
@@ -119,31 +137,31 @@ public class create_license extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jdcFechaCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtVida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jDateChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jdcFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -153,6 +171,88 @@ public class create_license extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+   
+    try {
+      
+        String tipoLicencia = (String) jcbLicencia.getSelectedItem();
+        double costo = Double.parseDouble(txtCosto.getText());
+        java.sql.Date fechaCompra = new java.sql.Date(jdcFechaCompra.getDate().getTime());
+        java.sql.Date fechaFin = new java.sql.Date(jdcFin.getDate().getTime());
+        int vidaUtil = Integer.parseInt(txtVida.getText());
+        double valorLibros = Double.parseDouble(txtLibros.getText());
+        double valorPendiente = Double.parseDouble(txtPendiente.getText());
+
+        int idusuario = 1; 
+
+        Connection con = DriverManager.getConnection(
+    "jdbc:postgresql://localhost:5433/Activos_Intangibles",
+    "postgres",                                            
+    "255623"                                               
+);
+
+
+        
+        try {
+            PreparedStatement check = con.prepareStatement("SELECT nombre FROM usuario WHERE idusuario = ?");
+            check.setInt(1, idusuario);
+            java.sql.ResultSet rs = check.executeQuery();
+            if (!rs.next()) {
+                System.out.println(">>> ❌ En esta conexión NO existe el usuario con idusuario = " + idusuario);
+            } else {
+                System.out.println(">>> ✅ Usuario encontrado: " + rs.getString("nombre"));
+            }
+            rs.close();
+            check.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // Consulta SQL para insertar los datos 
+        String sql = "INSERT INTO licencia (tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes, idusuario) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, tipoLicencia);
+        ps.setDouble(2, costo);
+        ps.setDate(3, fechaCompra);
+        ps.setDate(4, fechaFin);
+        ps.setInt(5, vidaUtil);
+        ps.setDouble(6, valorLibros);
+        ps.setDouble(7, valorPendiente);
+        ps.setInt(8, idusuario);
+
+        System.out.println("Insertando licencia con idusuario: " + idusuario);
+
+        ps.executeUpdate();
+        JOptionPane.showMessageDialog(this, "✅ Licencia guardada exitosamente.");
+
+        // Limpiar campos (opcional)
+        jcbLicencia.setSelectedIndex(0);
+        txtCosto.setText("");
+        jdcFechaCompra.setDate(null);
+        jdcFin.setDate(null);
+        txtVida.setText("");
+        txtLibros.setText("");
+        txtPendiente.setText("");
+
+        // Cerrar ventana
+        this.dispose();
+
+        ps.close();
+        con.close();
+
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "⚠️ Verifica que todos los campos numéricos estén correctamente llenos.");
+    } catch (NullPointerException ex) {
+        JOptionPane.showMessageDialog(this, "⚠️ Asegúrate de seleccionar ambas fechas.");
+    } catch (SQLException ex) {
+        Logger.getLogger(create_license.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+
+    }//GEN-LAST:event_button1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,10 +293,7 @@ public class create_license extends javax.swing.JFrame {
     private java.awt.Button button1;
     private java.awt.Button button2;
     private com.toedter.calendar.JCalendar jCalendar1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private com.toedter.calendar.JDateChooser jDateChooser3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -205,9 +302,12 @@ public class create_license extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JComboBox<String> jcbLicencia;
+    private com.toedter.calendar.JDateChooser jdcFechaCompra;
+    private com.toedter.calendar.JDateChooser jdcFin;
+    private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtLibros;
+    private javax.swing.JTextField txtPendiente;
+    private javax.swing.JTextField txtVida;
     // End of variables declaration//GEN-END:variables
 }
