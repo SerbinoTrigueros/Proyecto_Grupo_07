@@ -16,24 +16,7 @@ public class Activos_Intangibles {
     public static void main(String[] args) {
      
         
-        System.out.println("111111111111");
-        
-        System.out.println("Sabes que quiero decir, ya no me mires así, no\n" +
-"\n" +
-"Yo simplemente puedo decirte que eres\n" +
-"Lo más bonito que he visto en toda mi vida\n" +
-"Yo sé que nunca te lo he dicho y me da miedo confesar\n" +
-"Pero antes quiero besarte");
-        
-        
-        int suma;
-        int a = 1;
-        int b= 44;
-        
-        suma = a + b;
-        
-        System.out.println(suma);
-        System.out.println("Prueba de r");
+        System.out.println("");
     }
     
 }
