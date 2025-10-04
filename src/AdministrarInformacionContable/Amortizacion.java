@@ -7,29 +7,86 @@ package AdministrarInformacionContable;
 import java.util.Date;
 
 public class Amortizacion {
+
     private int idAmortizacion;
-    private int idLicencia;
     private String tipoCartera;
     private double monto;
     private Date fechaRegistro;
+    private int idLicencia;
     private String estado;
 
-    // Getters y Setters
-    public int getIdAmortizacion() { return idAmortizacion; }
-    public void setIdAmortizacion(int idAmortizacion) { this.idAmortizacion = idAmortizacion; }
+    // 🔹 Constructor vacío (necesario para frameworks o uso general)
+    public Amortizacion() {
+    }
 
-    public int getIdLicencia() { return idLicencia; }
-    public void setIdLicencia(int idLicencia) { this.idLicencia = idLicencia; }
+    // 🔹 Constructor completo (este es el que usa el DAO)
+    public Amortizacion(int idAmortizacion, String tipoCartera, double monto, Date fechaRegistro, int idLicencia, String estado) {
+        this.idAmortizacion = idAmortizacion;
+        this.tipoCartera = tipoCartera;
+        this.monto = monto;
+        this.fechaRegistro = fechaRegistro;
+        this.idLicencia = idLicencia;
+        this.estado = estado;
+    }
 
-    public String getTipoCartera() { return tipoCartera; }
-    public void setTipoCartera(String tipoCartera) { this.tipoCartera = tipoCartera; }
+    // 🔹 Getters y Setters
+    public int getIdAmortizacion() {
+        return idAmortizacion;
+    }
 
-    public double getMonto() { return monto; }
-    public void setMonto(double monto) { this.monto = monto; }
+    public void setIdAmortizacion(int idAmortizacion) {
+        this.idAmortizacion = idAmortizacion;
+    }
 
-    public Date getFechaRegistro() { return fechaRegistro; }
-    public void setFechaRegistro(Date fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+    public String getTipoCartera() {
+        return tipoCartera;
+    }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public void setTipoCartera(String tipoCartera) {
+        this.tipoCartera = tipoCartera;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public int getIdLicencia() {
+        return idLicencia;
+    }
+
+    public void setIdLicencia(int idLicencia) {
+        this.idLicencia = idLicencia;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "Amortizacion{" +
+                "idAmortizacion=" + idAmortizacion +
+                ", tipoCartera='" + tipoCartera + '\'' +
+                ", monto=" + monto +
+                ", fechaRegistro=" + fechaRegistro +
+                ", idLicencia=" + idLicencia +
+                ", estado='" + estado + '\'' +
+                '}';
+    }
 }

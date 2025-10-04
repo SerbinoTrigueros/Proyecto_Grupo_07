@@ -54,18 +54,13 @@ public class FrmAdministrarContabilidad extends JFrame {
         txtValorPendiente.setBounds(470, 280, 150, 25);
         add(txtValorPendiente);
 
-        btnActualizar = new JButton("Actualizar");
-        btnActualizar.setBounds(250, 350, 150, 30);
-        btnActualizar.addActionListener(e -> actualizarLicencia());
-        add(btnActualizar);
-
         btnRefrescar = new JButton("Refrescar");
         btnRefrescar.setBounds(420, 350, 120, 30);
         btnRefrescar.addActionListener(e -> cargarLicencias());
         add(btnRefrescar);
         
         btnMostrarAmortizaciones = new JButton("Mostrar Amortizaciones");
-        btnMostrarAmortizaciones.setBounds(50, 390, 200, 30);
+        btnMostrarAmortizaciones.setBounds(50, 350, 200, 30);
         add(btnMostrarAmortizaciones);
            btnMostrarAmortizaciones.addActionListener(e -> {
             FrmMostrarAmortizaciones frm = new FrmMostrarAmortizaciones();
@@ -78,36 +73,7 @@ public class FrmAdministrarContabilidad extends JFrame {
         tablaLicencias.setModel(modelo);
     }
 
-    private void actualizarLicencia() {
-        int fila = tablaLicencias.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una licencia para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        try {
-            int idLicencia = (int) tablaLicencias.getValueAt(fila, 0);
-            double valorLibros = Double.parseDouble(txtValorLibros.getText());
-            double valorPendiente = Double.parseDouble(txtValorPendiente.getText());
-
-            if (valorLibros < 0 || valorPendiente < 0) {
-                JOptionPane.showMessageDialog(this, "Los valores deben ser positivos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            boolean actualizado = dao.actualizarLicencia(idLicencia, valorLibros, valorPendiente);
-            if (actualizado) {
-                JOptionPane.showMessageDialog(this, "Información contable actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarLicencias();
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al actualizar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-    }
+   
     
 
     public static void main(String[] args) {

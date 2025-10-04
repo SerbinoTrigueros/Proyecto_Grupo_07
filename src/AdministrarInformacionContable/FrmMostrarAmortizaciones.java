@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package AdministrarInformacionContable;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class FrmMostrarAmortizaciones extends JFrame {
 
     private JComboBox<String> cbTipo;
+    private JComboBox<String> cbEstado;
     private JTextField txtIdLicencia;
     private JTable tabla;
     private AmortizacionDAO dao;
@@ -21,22 +23,33 @@ public class FrmMostrarAmortizaciones extends JFrame {
         dao = new AmortizacionDAO(conn);
 
         setTitle("Mostrar Amortizaciones");
-        setSize(700, 400);
+        setSize(850, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         // Panel superior
-        JPanel panelTop = new JPanel();
+        JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
         panelTop.add(new JLabel("ID Licencia:"));
         txtIdLicencia = new JTextField(5);
         panelTop.add(txtIdLicencia);
 
+        // Selección de tipo (mensual / anual / acumulado)
         panelTop.add(new JLabel("Tipo:"));
-        cbTipo = new JComboBox<>(new String[]{"mensual", "acumulado", "pendiente"});
+        cbTipo = new JComboBox<>(new String[]{"mensual", "anual", "acumulado"});
         panelTop.add(cbTipo);
 
+        // Selección de estado (pendiente / pagada / todos)
+        panelTop.add(new JLabel("Estado:"));
+        cbEstado = new JComboBox<>(new String[]{"todos", "pendiente", "pagada"});
+        panelTop.add(cbEstado);
+
+        // Botones
         JButton btnMostrar = new JButton("Mostrar");
+        JButton btnEstado = new JButton("Marcar como Pagada");
         panelTop.add(btnMostrar);
+        panelTop.add(btnEstado);
+
         add(panelTop, BorderLayout.NORTH);
 
         // Tabla
@@ -45,50 +58,76 @@ public class FrmMostrarAmortizaciones extends JFrame {
         ));
         add(new JScrollPane(tabla), BorderLayout.CENTER);
 
+        // Eventos
         btnMostrar.addActionListener(e -> cargarAmortizaciones());
+        btnEstado.addActionListener(e -> cambiarEstado());
     }
-    
+
     public FrmMostrarAmortizaciones() {
         this(ConexionBD.conectar());
     }
 
     private void cargarAmortizaciones() {
-       try {
-        int idLicencia = Integer.parseInt(txtIdLicencia.getText());
+        try {
+            int idLicencia = Integer.parseInt(txtIdLicencia.getText());
 
-        // Validar que la licencia exista
-        if (!dao.licenciaExiste(idLicencia)) {
-            JOptionPane.showMessageDialog(this, "La licencia con ID " + idLicencia + " no existe.");
+            if (!dao.licenciaExiste(idLicencia)) {
+                JOptionPane.showMessageDialog(this, "La licencia con ID " + idLicencia + " no existe.");
+                return;
+            }
+
+            // Generar amortizaciones solo si no existen
+            dao.generarAmortizaciones(idLicencia);
+
+            String tipo = (String) cbTipo.getSelectedItem();
+            String estado = (String) cbEstado.getSelectedItem();
+
+            List<Amortizacion> lista = dao.listarAmortizaciones(idLicencia, tipo);
+            DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+            model.setRowCount(0);
+
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No hay amortizaciones registradas para esta licencia.");
+            } else {
+                for (Amortizacion a : lista) {
+                    // Filtrar por estado solo si el usuario selecciona algo específico
+                    if (!estado.equals("todos") && !a.getEstado().equalsIgnoreCase(estado)) {
+                        continue;
+                    }
+
+                    model.addRow(new Object[]{
+                        a.getIdAmortizacion(),
+                        a.getTipoCartera(),
+                        a.getMonto(),
+                        a.getFechaRegistro(),
+                        a.getEstado()
+                    });
+                }
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un número válido para el ID de licencia.");
+        }
+    }
+
+    private void cambiarEstado() {
+        int fila = tabla.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una amortización de la tabla.");
             return;
         }
 
-        String tipo = (String) cbTipo.getSelectedItem();
-        List<Amortizacion> lista = dao.listarAmortizaciones(idLicencia, tipo);
-        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
-        model.setRowCount(0);
+        int idAmortizacion = (int) tabla.getValueAt(fila, 0);
+        String nuevoEstado = "pagada";
 
-        if (lista.isEmpty()) {
-            // Si la licencia existe pero no hay amortizaciones
-            JOptionPane.showMessageDialog(this, "No hay amortizaciones registradas para esta licencia.");
-        } else {
-            for (Amortizacion a : lista) {
-                model.addRow(new Object[]{
-                    a.getIdAmortizacion(),
-                    a.getTipoCartera(),
-                    a.getMonto(),
-                    a.getFechaRegistro(),
-                    a.getEstado()
-                });
-            }
-        }
-
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Ingrese un número válido para el ID de licencia.");
-    }
+        dao.actualizarEstado(idAmortizacion, nuevoEstado);
+        JOptionPane.showMessageDialog(this, "Amortización marcada como pagada.");
+        cargarAmortizaciones();
     }
 
     public static void main(String[] args) {
-        Connection conn = ConexionBD.conectar(); //  clase de conexión
+        Connection conn = ConexionBD.conectar();
         SwingUtilities.invokeLater(() -> new FrmMostrarAmortizaciones(conn).setVisible(true));
     }
 }
+
