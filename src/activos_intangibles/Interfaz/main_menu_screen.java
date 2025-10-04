@@ -4,6 +4,8 @@
  */
 package activos_intangibles.Interfaz;
 
+import AdministrarInformacionContable.FrmAdministrarContabilidad;
+import AdministrarInformacionContable.FrmMostrarAmortizaciones;
 import activos_intangibles.Interfaz.gestion_license.menu_gestion_license;
 import javax.swing.JOptionPane;
 
@@ -52,7 +54,7 @@ public class main_menu_screen extends javax.swing.JFrame {
             }
         });
 
-        jcbGestion_Administracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrador de Informacion Contable" }));
+        jcbGestion_Administracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrar Informacion Contable", "Mostrar Amortizaciones" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,18 +88,28 @@ public class main_menu_screen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEntrarActionPerformed
-       //falta agregar el menu de la administracion contable
-       
-        String opcionSeleccionada = (String) jcbGestion_Administracion.getSelectedItem();
+      String opcionSeleccionada = (String) jcbGestion_Administracion.getSelectedItem();
 
     if (opcionSeleccionada.equals("Gestion de Licencias")) {
+        // Abre el menú de gestión de licencias
         menu_gestion_license gestion = new menu_gestion_license();
         gestion.setVisible(true);
-        // cierra el menú principal
+        this.dispose(); // Cierra el menú principal
+
+    } else if (opcionSeleccionada.equals("Administrar Informacion Contable")) {
+        // Abre la interfaz FrmAdministrarContabilidad
+        FrmAdministrarContabilidad contabilidad = new FrmAdministrarContabilidad();
+        contabilidad.setVisible(true);
+        contabilidad.setLocationRelativeTo(this);
+        this.dispose(); // Opcional
+
+    } else if (opcionSeleccionada.equals("Mostrar Amortizaciones")) {
+        // Abre la interfaz FrmMostrarAmortizaciones
+        FrmMostrarAmortizaciones amortizaciones = new FrmMostrarAmortizaciones();
+        amortizaciones.setVisible(true);
+        amortizaciones.setLocationRelativeTo(this);
         this.dispose(); 
 
-    } else if (opcionSeleccionada.equals("Administrador de Informacion Contable")) {
-        JOptionPane.showMessageDialog(this, "Módulo aún no disponible."); /*<------------ falta agregar el menu de administracion contable*/
     } else {
         JOptionPane.showMessageDialog(this, "Por favor seleccione una opción válida.");
     }

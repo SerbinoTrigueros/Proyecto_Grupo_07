@@ -47,16 +47,28 @@ public class FrmMostrarAmortizaciones extends JFrame {
 
         btnMostrar.addActionListener(e -> cargarAmortizaciones());
     }
+    
+    public FrmMostrarAmortizaciones() {
+        this(ConexionBD.conectar());
+    }
 
     private void cargarAmortizaciones() {
+       try {
         int idLicencia = Integer.parseInt(txtIdLicencia.getText());
-        String tipo = (String) cbTipo.getSelectedItem();
 
+        // Validar que la licencia exista
+        if (!dao.licenciaExiste(idLicencia)) {
+            JOptionPane.showMessageDialog(this, "La licencia con ID " + idLicencia + " no existe.");
+            return;
+        }
+
+        String tipo = (String) cbTipo.getSelectedItem();
         List<Amortizacion> lista = dao.listarAmortizaciones(idLicencia, tipo);
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
         model.setRowCount(0);
 
         if (lista.isEmpty()) {
+            // Si la licencia existe pero no hay amortizaciones
             JOptionPane.showMessageDialog(this, "No hay amortizaciones registradas para esta licencia.");
         } else {
             for (Amortizacion a : lista) {
@@ -69,6 +81,10 @@ public class FrmMostrarAmortizaciones extends JFrame {
                 });
             }
         }
+
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Ingrese un número válido para el ID de licencia.");
+    }
     }
 
     public static void main(String[] args) {

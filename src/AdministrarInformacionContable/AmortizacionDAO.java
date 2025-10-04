@@ -58,4 +58,21 @@ public class AmortizacionDAO {
 
         return lista;
     }
+    
+    public boolean licenciaExiste(int idLicencia) {
+    String sql = "SELECT 1 FROM licencia WHERE idlicencia = ?";
+
+    try (Connection conn = ConexionBD.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, idLicencia);
+        ResultSet rs = ps.executeQuery();
+
+        return rs.next(); // Devuelve true si encuentra la licencia
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }
