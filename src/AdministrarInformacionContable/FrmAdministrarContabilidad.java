@@ -14,6 +14,7 @@ public class FrmAdministrarContabilidad extends JFrame {
     private JTextField txtValorLibros, txtValorPendiente;
     private JButton btnActualizar, btnRefrescar;
     private ContabilidadDAO dao;
+    private JButton btnMostrarAmortizaciones;
 
     public FrmAdministrarContabilidad() {
         dao = new ContabilidadDAO();
@@ -62,6 +63,14 @@ public class FrmAdministrarContabilidad extends JFrame {
         btnRefrescar.setBounds(420, 350, 120, 30);
         btnRefrescar.addActionListener(e -> cargarLicencias());
         add(btnRefrescar);
+        
+        btnMostrarAmortizaciones = new JButton("Mostrar Amortizaciones");
+        btnMostrarAmortizaciones.setBounds(50, 390, 200, 30);
+        add(btnMostrarAmortizaciones);
+           btnMostrarAmortizaciones.addActionListener(e -> {
+            FrmMostrarAmortizaciones frm = new FrmMostrarAmortizaciones();
+            frm.setVisible(true);
+        });
     }
 
     private void cargarLicencias() {
@@ -97,7 +106,9 @@ public class FrmAdministrarContabilidad extends JFrame {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new FrmAdministrarContabilidad().setVisible(true));
