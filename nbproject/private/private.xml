@@ -3,16 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/activos_intangibles/Interfaz/gestion_license/DriverManager.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/AdministrarInformacionContable/ContabilidadDAO.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/AdministrarInformacionContable/FrmMostrarAmortizaciones.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/AdministrarInformacionContable/AmortizacionDAO.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/activos_intangibles/Interfaz/gestion_license/create_license.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/activos_intangibles/Interfaz/gestion_license/SQLException.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/activos_intangibles/Interfaz/gestion_license/PreparedStatement.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/AdministrarInformacionContable/Amortizacion.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/AdministrarInformacionContable/ConexionBD.java</file>
-            <file>file:/C:/Users/Dell/Desktop/Proyect/src/AdministrarInformacionContable/FrmAdministrarContabilidad.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/activos_intangibles/Interfaz/financial_admin/Show_Amortizations.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/AdministrarInformacionContable/ConexionBD.java</file>
+            <file>file:/C:/Users/serbi/Desktop/proyecto_grupo_7/Activos_Intangibles/src/AdministrarInformacionContable/FrmAdministrarContabilidad.java</file>
         </group>
     </open-files>
 </project-private>

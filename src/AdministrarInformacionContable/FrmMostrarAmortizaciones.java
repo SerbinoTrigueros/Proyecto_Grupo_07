@@ -72,7 +72,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
     }
 
     public static void main(String[] args) {
-        Connection conn = ConexionBD.conectar(); // tu clase de conexión
+        Connection conn = ConexionBD.conectar(); //  clase de conexión
         SwingUtilities.invokeLater(() -> new FrmMostrarAmortizaciones(conn).setVisible(true));
     }
 }
