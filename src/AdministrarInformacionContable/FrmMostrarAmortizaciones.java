@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package AdministrarInformacionContable;
 
 import javax.swing.*;
@@ -54,7 +53,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
 
         // Tabla
         tabla = new JTable(new DefaultTableModel(
-            new Object[]{"ID", "Tipo", "Monto", "Fecha", "Estado"}, 0
+                new Object[]{"ID", "Tipo", "Monto", "Fecha", "Estado"}, 0
         ));
         add(new JScrollPane(tabla), BorderLayout.CENTER);
 
@@ -89,19 +88,38 @@ public class FrmMostrarAmortizaciones extends JFrame {
             if (lista.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No hay amortizaciones registradas para esta licencia.");
             } else {
+                if (tipo.equals("acumulado")) {
+                    // Cabeceras personalizadas para el total
+                    model.setColumnIdentifiers(new Object[]{"ID Licencia", "Tipo", "Monto Total", "", ""});
+                } else {
+                    // Cabeceras estándar para los listados de registros
+                    model.setColumnIdentifiers(new Object[]{"ID", "Tipo", "Monto", "Fecha", "Estado"});
+                }
                 for (Amortizacion a : lista) {
                     // Filtrar por estado solo si el usuario selecciona algo específico
                     if (!estado.equals("todos") && !a.getEstado().equalsIgnoreCase(estado)) {
                         continue;
                     }
 
-                    model.addRow(new Object[]{
-                        a.getIdAmortizacion(),
-                        a.getTipoCartera(),
-                        a.getMonto(),
-                        a.getFechaRegistro(),
-                        a.getEstado()
-                    });
+                    if (tipo.equals("acumulado")) {
+                        // Muestra solo el total en la columna 'Monto Total'
+                        model.addRow(new Object[]{
+                            a.getIdLicencia(),
+                            a.getTipoCartera(), // 'Acumulado'
+                            a.getMonto(),
+                            "", // Fecha vacía
+                            "" // Estado vacío
+                        });
+                    } else {
+                        // Muestra el detalle del registro
+                        model.addRow(new Object[]{
+                            a.getIdAmortizacion(),
+                            a.getTipoCartera(),
+                            a.getMonto(),
+                            a.getFechaRegistro(),
+                            a.getEstado()
+                        });
+                    }
                 }
             }
 
@@ -130,4 +148,3 @@ public class FrmMostrarAmortizaciones extends JFrame {
         SwingUtilities.invokeLater(() -> new FrmMostrarAmortizaciones(conn).setVisible(true));
     }
 }
-
