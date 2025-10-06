@@ -4,18 +4,27 @@
  */
 package activos_intangibles.Interfaz.financial_admin;
 
-import AdministrarInformacionContable.Amortizacion;
-import AdministrarInformacionContable.AmortizacionDAO;
 import AdministrarInformacionContable.FrmAdministrarContabilidad;
+import activos_intangibles.Interfaz.gestion_license.create_license;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSetMetaData;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  *
@@ -322,34 +331,91 @@ public class License_Reports extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_GuardarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GuardarReporteActionPerformed
-        // TODO add your handling code here:
-        try {
-            int filaSeleccionada = jtMostrar.getSelectedRow();
-            String strId = (String) jtMostrar.getValueAt(filaSeleccionada, 0);
-            
-            Connection con = DriverManager.getConnection(
-            "jdbc:postgresql://localhost:5432/postgres",
-            "postgres",
-            "cr23081"
-            );
-            
-            //Calcula la amortizacion del intangible seleccionado
-            AmortizacionDAO dao = new AmortizacionDAO(con);
-            int idlicencia = Integer.parseInt(strId);
-            dao.generarAmortizaciones(idlicencia);
+        // Verifica que se seleccione una fila de la tabla
+        int filaSeleccionada = jtMostrar.getSelectedRow();
+        if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Por favor, selecciona una licencia");
+        return;
+    }
+        String idStr = jtMostrar.getValueAt(filaSeleccionada, 0).toString();
+        int idlicencia = Integer.parseInt(idStr);
+        
+        try {                              
+            //Abre el explorador de archivos para seleccionar el txt donde generaremos el reporte
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto","txt");
+            JFileChooser seleccionador = new JFileChooser();
+            seleccionador.setFileFilter(filtro);
+            seleccionador.setDialogTitle("Abrir");
+            seleccionador.showOpenDialog(null);
+                
+            //Verifica que el archivo exista
+            if(seleccionador.getSelectedFile() != null){
+                File archivo = seleccionador.getSelectedFile();
+                PrintWriter escritura = null;
+                
+                try{
+                    escritura = new PrintWriter(archivo);
+                } catch (FileNotFoundException e){
+                    JOptionPane.showMessageDialog(null, "Error al intentar abrir el archivo " + archivo);
+                }
+                
+                //Conexion a la base de datos
+                Connection con = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "cr23081"
+                );
+                           
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes FROM licencia");
+                
+                
+                ResultSetMetaData meta = rs.getMetaData();
+                 int columnas = meta.getColumnCount();
 
+                // Escribir encabezados
+                for (int i = 1; i <= columnas; i++) {
+                    escritura.append(meta.getColumnName(i));
+                    if (i < columnas) escritura.append(",\t");
+                }
+                escritura.append("\n");
+
+                // Escribir datos
+                while (rs.next()) {
+                for (int i = 1; i <= columnas; i++) {
+                    escritura.append(rs.getString(i));
+                    if (i < columnas) escritura.append(",\t");
+                }
+                escritura.append("\n");
+            }
+                
+            //Mensaje de exito
+            escritura.flush();
+            JOptionPane.showMessageDialog(null, "Archivo exportado: " + archivo);
             
-            //Muestra los valores de la amortizacion
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT monto FROM amortizacion WHERE idlicencia = ?");
-            jtMostrar.setValueAt(rs.getObject("monto"), filaSeleccionada, 4);
+            try{
+                // Consulta SQL para insertar los datos del reporte
+            String sql = "INSERT INTO reporte (descripcion, fechagenerada, tipo, idlicencia) " +
+                     "VALUES (?, ?, ?, ?)";
             
+            LocalDate fechaGenerada = LocalDate.now();
+            java.sql.Date fecha;
+            Date date = Date.from(fechaGenerada.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            fecha = new java.sql.Date(date.getTime());
             
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "Reporte de los intangibles actuales");
+            ps.setDate(2, fecha);
+            ps.setString(3, "Archivo de texto");
+            ps.setInt(4, idlicencia);
+            ps.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(create_license.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-        } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido: " + e.getMessage());
+            }      
         } catch (SQLException ex) {
-            Logger.getLogger(License_Reports.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(License_Reports.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton_GuardarReporteActionPerformed
 
@@ -405,8 +471,11 @@ private void cargarDatosEnTabla() {
     modelo.addColumn("ID");
     modelo.addColumn("Licencia");
     modelo.addColumn("Costo");
-    modelo.addColumn("Amortizacion Pendiente");
-    modelo.addColumn("Amortizacion Actual");
+    modelo.addColumn("Fecha de Compra");
+    modelo.addColumn("Fecha de Fin");
+    modelo.addColumn("Vida");
+    modelo.addColumn("Libros");
+    modelo.addColumn("Pendiente");
 
     try {
         Connection con = DriverManager.getConnection(
@@ -416,7 +485,7 @@ private void cargarDatosEnTabla() {
         );
 
         Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery("SELECT idlicencia, tipolicencia, costo, valorpendientes FROM licencia");
+        ResultSet rs = st.executeQuery("SELECT idlicencia, tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes FROM licencia");
 
 
         while (rs.next()) {
@@ -424,6 +493,10 @@ private void cargarDatosEnTabla() {
         rs.getString("idlicencia"),
         rs.getString("tipolicencia"),
         rs.getDouble("costo"),
+        rs.getDate("fechacompra"),
+        rs.getDate("fechafin"),
+        rs.getString("vidautil"),
+        rs.getString("valorenlibros"),
         rs.getString("valorpendientes")
     });
         }
