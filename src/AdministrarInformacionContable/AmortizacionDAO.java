@@ -124,7 +124,7 @@ public class AmortizacionDAO {
                 if (tipo.equalsIgnoreCase("acumulado")) {
                 // Solo lee las dos columnas que devuelve el SQL de SUM()
                 a.setIdLicencia(rs.getInt("idlicencia"));
-                a.setMonto(rs.getDouble("monto_total")); // Leemos con el alias 'monto_total'
+                a.setMonto(rs.getDouble("monto_total")); // Lee con el alias 'monto_total'
                 a.setTipoCartera("Acumulado"); // Asignamos el tipo manualmente
                 // Las otras propiedades (ID, Fecha, Estado) quedan por defecto (0 o null)
             } else {

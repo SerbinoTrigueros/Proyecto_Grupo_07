@@ -11,23 +11,31 @@ public class ContabilidadDAO {
 
     public DefaultTableModel listarLicencias() {
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Tipo Licencia");
-        modelo.addColumn("Costo");
-        modelo.addColumn("Valor en Libros");
-        modelo.addColumn("Valor Pendiente");
+        
+        // solo ver id,tipo,costo, la fecha de compra y la fecha fin y la vida util en anios
+        modelo.addColumn("ID Licencia"); // Mapea a idlicencia
+        modelo.addColumn("Tipo Licencia"); // Mapea a tipolicencia
+        modelo.addColumn("Costo"); // Mapea a costo
+        modelo.addColumn("Fecha Compra"); // Mapea a fechacompra
+        modelo.addColumn("Fecha Fin"); // Mapea a fechafin
+        modelo.addColumn("Vida Útil (Años)"); // Mapea a vidautil
+
+        // selecionar las licencias
+        String sql = "SELECT idlicencia, tipolicencia, costo, fechacompra, fechafin, vidautil FROM licencia";
 
         try (Connection conn = ConexionBD.conectar();
              Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT idlicencia, tipolicencia, costo, valorenlibros, valorpendientes FROM licencia")) {
+             ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
+                //leer solo esas colmunas
                 Object[] fila = {
                     rs.getInt("idlicencia"),
                     rs.getString("tipolicencia"),
                     rs.getDouble("costo"),
-                    rs.getDouble("valorenlibros"),
-                    rs.getDouble("valorpendientes")
+                    rs.getDate("fechacompra"), 
+                    rs.getDate("fechafin"), 
+                    rs.getInt("vidautil")
                 };
                 modelo.addRow(fila);
             }
@@ -38,6 +46,7 @@ public class ContabilidadDAO {
         return modelo;
     }
 
+    // metodo actualizado
     public boolean actualizarLicencia(int idLicencia, double valorLibros, double valorPendiente) {
         String sql = "UPDATE licencia SET valorenlibros = ?, valorpendientes = ? WHERE idlicencia = ?";
         try (Connection conn = ConexionBD.conectar();

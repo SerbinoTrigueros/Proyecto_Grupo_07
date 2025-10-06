@@ -15,11 +15,11 @@ public class Amortizacion {
     private int idLicencia;
     private String estado;
 
-    // 🔹 Constructor vacío (necesario para frameworks o uso general)
+    //Constructor vacío (necesario para frameworks o uso general)
     public Amortizacion() {
     }
 
-    // 🔹 Constructor completo (este es el que usa el DAO)
+    //Constructor completo (este es el que usa el DAO)
     public Amortizacion(int idAmortizacion, String tipoCartera, double monto, Date fechaRegistro, int idLicencia, String estado) {
         this.idAmortizacion = idAmortizacion;
         this.tipoCartera = tipoCartera;
