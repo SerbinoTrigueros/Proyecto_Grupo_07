@@ -75,7 +75,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
                 return;
             }
 
-            // ✅ Generar automáticamente las amortizaciones si no existen
+            // aqui generamos automáticamente las amortizaciones si no existen
             dao.generarAmortizaciones(idLicencia);
 
             String tipo = (String) cbTipo.getSelectedItem();
@@ -95,7 +95,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
                 }
 
                 for (Amortizacion a : lista) {
-                    // Filtrar por estado si el usuario selecciona algo específico
+                    // filtramos por estado si el usuario selecciona algo especifico
                     if (!estado.equals("todos") && !a.getEstado().equalsIgnoreCase(estado)) {
                         continue;
                     }

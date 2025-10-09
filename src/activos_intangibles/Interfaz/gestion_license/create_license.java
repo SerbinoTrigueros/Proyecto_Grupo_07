@@ -6,6 +6,7 @@ package activos_intangibles.Interfaz.gestion_license;
 
 
 import static AdministrarInformacionContable.ConexionBD.conectar;
+import activos_intangibles.Interfaz.gestion_license.menu_gestion_license;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -154,30 +155,45 @@ public class create_license extends javax.swing.JFrame {
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
                                 
      try {
-        // 1️⃣ Obtener datos del formulario
+    //obtener datos del formulario
         String tipoLicencia = (String) jcbLicencia.getSelectedItem();
         double costo = Double.parseDouble(txtCosto.getText());
 
-        // Validar fechas seleccionadas
+        // validar las fechas seleccionadas
         if (jdcFechaCompra.getDate() == null || jdcFin.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "⚠️ Asegúrate de seleccionar ambas fechas.");
-            return;
-        }
+        JOptionPane.showMessageDialog(this, "Asegúrate de seleccionar ambas fechas.");
+        return;
+       }
 
         java.sql.Date fechaCompra = new java.sql.Date(jdcFechaCompra.getDate().getTime());
         java.sql.Date fechaFin = new java.sql.Date(jdcFin.getDate().getTime());
         int vidaUtil = Integer.parseInt(txtVida.getText());
+        
+        // Calcular la diferencia en años entre las fechas
+        java.time.LocalDate inicio = fechaCompra.toLocalDate();
+        java.time.LocalDate fin = fechaFin.toLocalDate();
+        int aniosEntreFechas = java.time.Period.between(inicio, fin).getYears();
 
-        int idUsuario = 1; // Cambia según el usuario logueado
+        // Validar que la vida útil coincida con la diferencia real
+        if (vidaUtil != aniosEntreFechas) {
+        JOptionPane.showMessageDialog(this,
+        " La vida util ingresada no coincide con las fechas que ha seleccionado. \n" +
+        "Debería de ser de " + aniosEntreFechas + " años.",
+        "Error de validación  :( ",
+        JOptionPane.WARNING_MESSAGE);
+    return; 
+       }
+         
+        int idUsuario = 1;
 
-        // ️⃣ Conexión a la base de datos
+        //conexion a la base de datos
         Connection con = conectar();
         if (con == null) {
             JOptionPane.showMessageDialog(this, "❌ No se pudo conectar a la base de datos.");
             return;
         }
 
-        // 3️⃣ Insertar licencia y obtener ID generado
+        //Insertarmos la licencia y obtenemos el ID generado
         String sqlLicencia = "INSERT INTO licencia (tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes, idusuario) "
                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING idlicencia";
 
@@ -188,8 +204,10 @@ public class create_license extends javax.swing.JFrame {
             ps.setDate(3, fechaCompra);
             ps.setDate(4, fechaFin);
             ps.setInt(5, vidaUtil);
-            ps.setDouble(6, costo);   // valorEnLibros inicial = costo
-            ps.setDouble(7, 0.0);     // valorPendiente inicial = 0
+            // valorEnLibros inicial = costo
+            ps.setDouble(6, costo);   
+             // valorPendiente inicial = 0
+            ps.setDouble(7, 0.0);    
             ps.setInt(8, idUsuario);
 
             try (java.sql.ResultSet rs = ps.executeQuery()) {
@@ -204,19 +222,22 @@ public class create_license extends javax.swing.JFrame {
             return;
         }
 
-        // 4️⃣ Insertar la primera cuota automáticamente
+        // Insertamos la primera cuota automáticamente
         String sqlCuota = "INSERT INTO cuota (numerocuota, monto, estado, idlicencia) VALUES (?, ?, ?, ?)";
         try (PreparedStatement psCuota = con.prepareStatement(sqlCuota)) {
-            psCuota.setInt(1, 1); // primera cuota
+            
+             // primera cuota
+            psCuota.setInt(1, 1);
             psCuota.setDouble(2, costo);
-            psCuota.setString(3, "Pendiente"); // estado inicial
+             // estado inicial
+            psCuota.setString(3, "Pendiente");
             psCuota.setInt(4, idLicenciaGenerado);
             psCuota.executeUpdate();
         }
-
+        //se guarda la licencia
         JOptionPane.showMessageDialog(this, "✅ Licencia y primera cuota guardadas exitosamente.");
 
-        // 5️⃣ Abrir menú de gestión de licencias
+        //Abrir menu de gestion de licencias
         menu_gestion_license menu = new menu_gestion_license();
         menu.setVisible(true);
         this.dispose();
@@ -230,6 +251,7 @@ public class create_license extends javax.swing.JFrame {
         ex.printStackTrace();
     }
 
+    
     }//GEN-LAST:event_button1ActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package activos_intangibles.Interfaz.financial_admin;
+//package activos_intangibles.Interfaz.financial_admin;
 
 import AdministrarInformacionContable.FrmAdministrarContabilidad;
 import activos_intangibles.Interfaz.gestion_license.create_license;
