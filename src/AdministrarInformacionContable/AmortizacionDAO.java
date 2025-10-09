@@ -30,68 +30,74 @@ public class AmortizacionDAO {
     }
 
     // Calcula y guarda amortizaciones (mensuales y anuales)
-    public void generarAmortizaciones(int idLicencia) {
-        // Si ya existen amortizaciones, no volver a generarlas
-        if (amortizacionesExisten(idLicencia)) {
-            return;
-        }
+   public boolean generarAmortizaciones(int idLicencia) {
+    if (amortizacionesExisten(idLicencia)) {
+        return false; // Ya existen, no generamos
+    }
 
-        String sqlLicencia = "SELECT costo, vidautil, fechacompra FROM licencia WHERE idlicencia = ?";
-        String sqlInsert = "INSERT INTO amortizacion (idlicencia, tipocartera, monto, fecharegistro, estado) VALUES (?, ?, ?, ?, ?)";
+    String sqlLicencia = "SELECT costo, vidautil, fechacompra FROM licencia WHERE idlicencia = ?";
+    String sqlInsert = "INSERT INTO amortizacion (idlicencia, tipocartera, monto, fecharegistro, estado) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement psLic = conn.prepareStatement(sqlLicencia);
-             PreparedStatement psIns = conn.prepareStatement(sqlInsert)) {
 
-            psLic.setInt(1, idLicencia);
-            ResultSet rs = psLic.executeQuery();
+    try (PreparedStatement psLic = conn.prepareStatement(sqlLicencia);
+         PreparedStatement psIns = conn.prepareStatement(sqlInsert)) {
 
-            if (rs.next()) {
-                double costo = rs.getDouble("costo");
-                int vidaUtil = rs.getInt("vidautil");
-                java.sql.Date fechaCompra = rs.getDate("fechacompra");
+        psLic.setInt(1, idLicencia);
+        ResultSet rs = psLic.executeQuery();
 
-                if (vidaUtil <= 0) vidaUtil = 1; // evitar división entre 0
+        if (rs.next()) {
+            double costo = rs.getDouble("costo");
+            int vidaUtil = rs.getInt("vidautil");
+            java.sql.Date fechaCompra = rs.getDate("fechacompra");
 
-                double amortMensual = costo / (vidaUtil * 12);
-                double amortAnual = costo / vidaUtil;
+            if (vidaUtil <= 0) vidaUtil = 1;
 
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(fechaCompra);
+            double amortMensual = costo / (vidaUtil * 12);
+            double amortAnual = costo / vidaUtil;
 
-                // Insertar amortizaciones mensuales
-                for (int i = 0; i < vidaUtil * 12; i++) {
-                    cal.add(Calendar.MONTH, 1);
-                    psIns.setInt(1, idLicencia);
-                    psIns.setString(2, "mensual");
-                    psIns.setDouble(3, amortMensual);
-                    psIns.setDate(4, new java.sql.Date(cal.getTimeInMillis()));
-                    psIns.setString(5, "pendiente");
-                    psIns.addBatch();
-                }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(fechaCompra);
 
-                // Insertar amortizaciones anuales
-                cal.setTime(fechaCompra);
-                for (int i = 0; i < vidaUtil; i++) {
-                    cal.add(Calendar.YEAR, 1);
-                    psIns.setInt(1, idLicencia);
-                    psIns.setString(2, "anual");
-                    psIns.setDouble(3, amortAnual);
-                    psIns.setDate(4, new java.sql.Date(cal.getTimeInMillis()));
-                    psIns.setString(5, "pendiente");
-                    psIns.addBatch();
-                }
+            int idCuotaMensual = 1;
+            int idCuotaAnual = 1;
 
-                psIns.executeBatch();
+            for (int i = 0; i < vidaUtil * 12; i++) {
+                cal.add(Calendar.MONTH, 1);
+               psIns.setInt(1, idLicencia);
+               psIns.setString(2, "mensual");
+               psIns.setDouble(3, amortMensual);
+               psIns.setTimestamp(4, new java.sql.Timestamp(cal.getTimeInMillis()));
+               psIns.setString(5, "pendiente");
+               psIns.addBatch();
             }
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al generar amortizaciones: " + e.getMessage());
+            cal.setTime(fechaCompra);
+            for (int i = 0; i < vidaUtil; i++) {
+                cal.add(Calendar.YEAR, 1);
+               psIns.setInt(1, idLicencia);
+               psIns.setString(2, "anual");
+               psIns.setDouble(3, amortAnual);
+               psIns.setTimestamp(4, new java.sql.Timestamp(cal.getTimeInMillis()));
+               psIns.setString(5, "pendiente");
+               psIns.addBatch();
+            }
+
+            psIns.executeBatch();
+            JOptionPane.showMessageDialog(null, "✅ Amortizaciones generadas correctamente para la licencia.");
+            return true;
         }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al generar amortizaciones: " + e.getMessage());
     }
+
+    return false;
+}
+
 
     // Listar amortizaciones según el tipo
     public List<Amortizacion> listarAmortizaciones(int idLicencia, String tipo) {
-        List<Amortizacion> lista = new ArrayList<>();
+         List<Amortizacion> lista = new ArrayList<>();
         String sql = "";
 
         switch (tipo.toLowerCase()) {
@@ -122,20 +128,17 @@ public class AmortizacionDAO {
             while (rs.next()) {
                 Amortizacion a = new Amortizacion();
                 if (tipo.equalsIgnoreCase("acumulado")) {
-                // Solo lee las dos columnas que devuelve el SQL de SUM()
-                a.setIdLicencia(rs.getInt("idlicencia"));
-                a.setMonto(rs.getDouble("monto_total")); // Lee con el alias 'monto_total'
-                a.setTipoCartera("Acumulado"); // Asignamos el tipo manualmente
-                // Las otras propiedades (ID, Fecha, Estado) quedan por defecto (0 o null)
-            } else {
-                // Para los demás tipos, lee todas las columnas (SELECT *)
-                a.setIdAmortizacion(rs.getInt("idamortizacion"));
-                a.setIdLicencia(rs.getInt("idlicencia"));
-                a.setTipoCartera(rs.getString("tipocartera"));
-                a.setMonto(rs.getDouble("monto"));
-                a.setFechaRegistro(rs.getDate("fecharegistro"));
-                a.setEstado(rs.getString("estado"));
-            }
+                    a.setIdLicencia(rs.getInt("idlicencia"));
+                    a.setMonto(rs.getDouble("monto_total"));
+                    a.setTipoCartera("Acumulado");
+                } else {
+                    a.setIdAmortizacion(rs.getInt("idamortizacion"));
+                    a.setIdLicencia(rs.getInt("idlicencia"));
+                    a.setTipoCartera(rs.getString("tipocartera"));
+                    a.setMonto(rs.getDouble("monto"));
+                    a.setFechaRegistro(rs.getDate("fecharegistro"));
+                    a.setEstado(rs.getString("estado"));
+                }
                 lista.add(a);
             }
 
@@ -148,7 +151,7 @@ public class AmortizacionDAO {
 
     // Cambiar estado (pendiente/pagada)
     public void actualizarEstado(int idAmortizacion, String nuevoEstado) {
-        String sql = "UPDATE amortizacion SET estado = ? WHERE idamortizacion = ?";
+       String sql = "UPDATE amortizacion SET estado = ? WHERE idamortizacion = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nuevoEstado);
             ps.setInt(2, idAmortizacion);
@@ -159,7 +162,7 @@ public class AmortizacionDAO {
     }
 
     public boolean licenciaExiste(int idLicencia) {
-        String sql = "SELECT 1 FROM licencia WHERE idlicencia = ?";
+         String sql = "SELECT 1 FROM licencia WHERE idlicencia = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idLicencia);
             ResultSet rs = ps.executeQuery();
@@ -167,6 +170,22 @@ public class AmortizacionDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    
+       public void agregarAmortizacion(int idLicencia, String tipo, double monto, java.sql.Timestamp fecha, String estado, int idCuota) {
+        String sqlInsert = "INSERT INTO amortizacion (idlicencia, tipocartera, monto, fecharegistro, idcuota, estado) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(sqlInsert)) {
+            ps.setInt(1, idLicencia);
+            ps.setString(2, tipo);
+            ps.setDouble(3, monto);
+            ps.setTimestamp(4, fecha);
+            ps.setInt(5, idCuota);
+            ps.setString(6, estado);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "✅ Amortización agregada correctamente.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al agregar amortización: " + e.getMessage());
         }
     }
 }

@@ -67,7 +67,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
     }
 
     private void cargarAmortizaciones() {
-        try {
+         try {
             int idLicencia = Integer.parseInt(txtIdLicencia.getText());
 
             if (!dao.licenciaExiste(idLicencia)) {
@@ -75,7 +75,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
                 return;
             }
 
-            // Generar amortizaciones solo si no existen
+            // ✅ Generar automáticamente las amortizaciones si no existen
             dao.generarAmortizaciones(idLicencia);
 
             String tipo = (String) cbTipo.getSelectedItem();
@@ -89,35 +89,32 @@ public class FrmMostrarAmortizaciones extends JFrame {
                 JOptionPane.showMessageDialog(this, "No hay amortizaciones registradas para esta licencia.");
             } else {
                 if (tipo.equals("acumulado")) {
-                    // Cabeceras personalizadas para el total
                     model.setColumnIdentifiers(new Object[]{"ID Licencia", "Tipo", "Monto Total", "", ""});
                 } else {
-                    // Cabeceras estándar para los listados de registros
                     model.setColumnIdentifiers(new Object[]{"ID", "Tipo", "Monto", "Fecha", "Estado"});
                 }
+
                 for (Amortizacion a : lista) {
-                    // Filtrar por estado solo si el usuario selecciona algo específico
+                    // Filtrar por estado si el usuario selecciona algo específico
                     if (!estado.equals("todos") && !a.getEstado().equalsIgnoreCase(estado)) {
                         continue;
                     }
 
                     if (tipo.equals("acumulado")) {
-                        // Muestra solo el total en la columna 'Monto Total'
                         model.addRow(new Object[]{
-                            a.getIdLicencia(),
-                            a.getTipoCartera(), // 'Acumulado'
-                            a.getMonto(),
-                            "", // Fecha vacía
-                            "" // Estado vacío
+                                a.getIdLicencia(),
+                                a.getTipoCartera(),
+                                a.getMonto(),
+                                "",
+                                ""
                         });
                     } else {
-                        // Muestra el detalle del registro
                         model.addRow(new Object[]{
-                            a.getIdAmortizacion(),
-                            a.getTipoCartera(),
-                            a.getMonto(),
-                            a.getFechaRegistro(),
-                            a.getEstado()
+                                a.getIdAmortizacion(),
+                                a.getTipoCartera(),
+                                a.getMonto(),
+                                a.getFechaRegistro(),
+                                a.getEstado()
                         });
                     }
                 }
@@ -135,7 +132,7 @@ public class FrmMostrarAmortizaciones extends JFrame {
             return;
         }
 
-        int idAmortizacion = (int) tabla.getValueAt(fila, 0);
+         int idAmortizacion = (int) tabla.getValueAt(fila, 0);
         String nuevoEstado = "pagada";
 
         dao.actualizarEstado(idAmortizacion, nuevoEstado);

@@ -2,34 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package activos_intangibles.Interfaz.gestion_license;
+package activos_intangibles.Interfaz.financial_admin;
 
+import AdministrarInformacionContable.Amortizacion;
+import AdministrarInformacionContable.AmortizacionDAO;
 import static AdministrarInformacionContable.ConexionBD.conectar;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JOptionPane;
+import AdministrarInformacionContable.FrmAdministrarContabilidad;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author serbi
  */
-public class view_table_gestion extends javax.swing.JFrame {
+public class License_Reports extends javax.swing.JFrame {
 
     /**
-     * Creates new form gestion_licencias_screen
+     * Creates new form License_Reports
      */
-    public view_table_gestion() {
+    public License_Reports() {
         initComponents();
-        
-        btnAtras.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            btnAtrasActionPerformed(evt);
-        }
-    });
+        cargarDatosEnTabla();
     }
 
     /**
@@ -41,12 +41,31 @@ public class view_table_gestion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jButton_GuardarReporte = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtMostrar = new javax.swing.JTable();
-        btnMostrar = new javax.swing.JButton();
-        btnAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Generación de Reportes");
+
+        jButton_GuardarReporte.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_GuardarReporte.setText("Guardar Reporte");
+        jButton_GuardarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_GuardarReporteActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jtMostrar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -265,49 +284,82 @@ public class view_table_gestion extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jtMostrar);
 
-        btnMostrar.setText("Mostrar Datos");
-        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMostrarActionPerformed(evt);
-            }
-        });
-
-        btnAtras.setText("Volver");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton_GuardarReporte)
+                .addGap(392, 392, 392))
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnMostrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAtras))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(121, Short.MAX_VALUE))
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(383, 383, 383)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jButton1)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnMostrar)
-                    .addComponent(btnAtras))
-                .addContainerGap())
+                .addGap(37, 37, 37)
+                .addComponent(jButton_GuardarReporte)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
-          
-        cargarDatosEnTabla();
-    
-    }//GEN-LAST:event_btnMostrarActionPerformed
+    private void jButton_GuardarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GuardarReporteActionPerformed
+        // TODO add your handling code here:
+        try {
+            int filaSeleccionada = jtMostrar.getSelectedRow();
+            String strId = (String) jtMostrar.getValueAt(filaSeleccionada, 0);
+            
+              //conexion base de datos
+        Connection con = conectar();
+            
+            //Calcula la amortizacion del intangible seleccionado
+            AmortizacionDAO dao = new AmortizacionDAO(con);
+            int idlicencia = Integer.parseInt(strId);
+            dao.generarAmortizaciones(idlicencia);
+
+            
+            //Muestra los valores de la amortizacion
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT monto FROM amortizacion WHERE idlicencia = ?");
+            jtMostrar.setValueAt(rs.getObject("monto"), filaSeleccionada, 4);
+            
+            
+            
+        } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "ID inválido: " + e.getMessage());
+        } catch (SQLException ex) {
+            Logger.getLogger(License_Reports.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_GuardarReporteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Regresar al Formulario de Administracion Contable
+        FrmAdministrarContabilidad conta = new FrmAdministrarContabilidad();
+        conta.setVisible(true);
+        conta.setLocationRelativeTo(null);
+
+        //Cerrar ventana
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -326,65 +378,50 @@ public class view_table_gestion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(view_table_gestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(License_Reports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(view_table_gestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(License_Reports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(view_table_gestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(License_Reports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(view_table_gestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(License_Reports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new view_table_gestion().setVisible(true);
+                new License_Reports().setVisible(true);
             }
         });
-        
     }
-    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {
-    this.dispose();  // Cierra la ventana actual
-
-    menu_gestion_license menu = new menu_gestion_license();
-    menu.setVisible(true);  // al darle click al boton de atras nos manda al menu de la gestion
-}
     
 private void cargarDatosEnTabla() {
     DefaultTableModel modelo = new DefaultTableModel();
 
-    // Define las columnas que se van a mostrar en el JTable y se guardan en la BD{
-    modelo.addColumn("id");
+    // Define las columnas que se van a mostrar en el JTable y se guardan en la BD
+    modelo.addColumn("ID");
     modelo.addColumn("Licencia");
     modelo.addColumn("Costo");
-    modelo.addColumn("Fecha de Compra");
-    modelo.addColumn("Fecha de Fin");
-    modelo.addColumn("Vida");
-    modelo.addColumn("Libros");
-    modelo.addColumn("Pendiente");
+    modelo.addColumn("Amortizacion Pendiente");
+    modelo.addColumn("Amortizacion Actual");
 
     try {
-         //conexion base de datos
-        Connection con = conectar();
+        Connection con = DriverManager.getConnection(
+            "jdbc:postgresql://localhost:5432/postgres", // ubicacion de la conexion
+            "postgres",                                  // Usuario de donde eh creado la base de datos
+            "cr23081"                                    // Contraseña de la base de datos que es Activos_Intangibles
+        );
 
         Statement st = con.createStatement();
-
-        ResultSet rs = st.executeQuery("SELECT idlicencia, tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes FROM licencia");
+        ResultSet rs = st.executeQuery("SELECT idlicencia, tipolicencia, costo, valorpendientes FROM licencia");
 
 
         while (rs.next()) {
             modelo.addRow(new Object[] {
-        rs.getString("idlicencia"),         
+        rs.getString("idlicencia"),
         rs.getString("tipolicencia"),
         rs.getDouble("costo"),
-        rs.getDate("fechacompra"),
-        rs.getDate("fechafin"),
-        rs.getString("vidautil"),
-        rs.getString("valorenlibros"),
         rs.getString("valorpendientes")
     });
         }
@@ -399,11 +436,10 @@ private void cargarDatosEnTabla() {
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAtras;
-    private javax.swing.JButton btnMostrar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton_GuardarReporte;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtMostrar;
     // End of variables declaration//GEN-END:variables
 }
-
-

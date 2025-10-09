@@ -9,15 +9,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionBD {
-    private static final String URL = "jdbc:postgresql://localhost:5433/ss23018";
-    private static final String USER = "ss23018";
-    private static final String PASSWORD = "ss23018";
+       private static final String URL = "jdbc:postgresql://localhost:5433/Activos_Intangibles";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "255623";
 
     public static Connection conectar() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println(" Conexión exitosa");
+            System.out.println(" Conexion exitosa");
         } catch (SQLException e) {
             System.err.println("Ops ocurrio un error al conectar con la base de datos: " + e.getMessage());
         }

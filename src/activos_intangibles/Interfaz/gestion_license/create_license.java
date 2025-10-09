@@ -5,6 +5,7 @@
 package activos_intangibles.Interfaz.gestion_license;
 
 
+import static AdministrarInformacionContable.ConexionBD.conectar;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,14 +48,10 @@ public class create_license extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         txtCosto = new javax.swing.JTextField();
         jdcFechaCompra = new com.toedter.calendar.JDateChooser();
         txtVida = new javax.swing.JTextField();
         jdcFin = new com.toedter.calendar.JDateChooser();
-        txtLibros = new javax.swing.JTextField();
-        txtPendiente = new javax.swing.JTextField();
         button1 = new java.awt.Button();
         btnCancelar = new java.awt.Button();
         jcbLicencia = new javax.swing.JComboBox<>();
@@ -74,10 +71,6 @@ public class create_license extends javax.swing.JFrame {
         jLabel5.setText("Vida Util:");
 
         jLabel6.setText("Fecha de Fin:");
-
-        jLabel7.setText("Valor en Libros:");
-
-        jLabel8.setText("Valor Pendientes:");
 
         button1.setLabel("Guardar");
         button1.addActionListener(new java.awt.event.ActionListener() {
@@ -109,18 +102,14 @@ public class create_license extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtLibros, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jdcFin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtVida, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jdcFechaCompra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtCosto, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jcbLicencia, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPendiente)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -152,15 +141,7 @@ public class create_license extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jdcFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtLibros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtPendiente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -171,82 +152,83 @@ public class create_license extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-   
-    try {
-      
+                                
+     try {
+        // 1️⃣ Obtener datos del formulario
         String tipoLicencia = (String) jcbLicencia.getSelectedItem();
         double costo = Double.parseDouble(txtCosto.getText());
+
+        // Validar fechas seleccionadas
+        if (jdcFechaCompra.getDate() == null || jdcFin.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "⚠️ Asegúrate de seleccionar ambas fechas.");
+            return;
+        }
+
         java.sql.Date fechaCompra = new java.sql.Date(jdcFechaCompra.getDate().getTime());
         java.sql.Date fechaFin = new java.sql.Date(jdcFin.getDate().getTime());
         int vidaUtil = Integer.parseInt(txtVida.getText());
-        double valorLibros = Double.parseDouble(txtLibros.getText());
-        double valorPendiente = Double.parseDouble(txtPendiente.getText());
 
-        int idusuario = 1; 
+        int idUsuario = 1; // Cambia según el usuario logueado
 
-        Connection con = DriverManager.getConnection(
-    "jdbc:postgresql://localhost:5433/Activos_Intangibles",
-    "postgres",                                            
-    "255623"                                               
-);
-
-        try {
-            PreparedStatement check = con.prepareStatement("SELECT nombre FROM usuario WHERE idusuario = ?");
-            check.setInt(1, idusuario);
-            java.sql.ResultSet rs = check.executeQuery();
-            if (!rs.next()) {
-                System.out.println("❌ En esta conexión NO existe el usuario con idusuario = " + idusuario);
-            } else {
-                System.out.println("✅ Usuario encontrado: " + rs.getString("nombre"));
-            }
-            rs.close();
-            check.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        // ️⃣ Conexión a la base de datos
+        Connection con = conectar();
+        if (con == null) {
+            JOptionPane.showMessageDialog(this, "❌ No se pudo conectar a la base de datos.");
+            return;
         }
 
-        // Consulta SQL para insertar los datos 
-        String sql = "INSERT INTO licencia (tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes, idusuario) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // 3️⃣ Insertar licencia y obtener ID generado
+        String sqlLicencia = "INSERT INTO licencia (tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes, idusuario) "
+                           + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING idlicencia";
 
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setString(1, tipoLicencia);
-        ps.setDouble(2, costo);
-        ps.setDate(3, fechaCompra);
-        ps.setDate(4, fechaFin);
-        ps.setInt(5, vidaUtil);
-        ps.setDouble(6, valorLibros);
-        ps.setDouble(7, valorPendiente);
-        ps.setInt(8, idusuario);
+        int idLicenciaGenerado = -1;
+        try (PreparedStatement ps = con.prepareStatement(sqlLicencia)) {
+            ps.setString(1, tipoLicencia);
+            ps.setDouble(2, costo);
+            ps.setDate(3, fechaCompra);
+            ps.setDate(4, fechaFin);
+            ps.setInt(5, vidaUtil);
+            ps.setDouble(6, costo);   // valorEnLibros inicial = costo
+            ps.setDouble(7, 0.0);     // valorPendiente inicial = 0
+            ps.setInt(8, idUsuario);
 
-        System.out.println("Insertando licencia con idusuario: " + idusuario);
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    idLicenciaGenerado = rs.getInt("idlicencia");
+                }
+            }
+        }
 
-        ps.executeUpdate();
-        JOptionPane.showMessageDialog(this, "✅ Licencia guardada exitosamente.");
+        if (idLicenciaGenerado == -1) {
+            JOptionPane.showMessageDialog(this, "⚠️ No se pudo obtener el ID de la licencia creada.");
+            return;
+        }
 
-        // Limpiar campos (opcional)
-        jcbLicencia.setSelectedIndex(0);
-        txtCosto.setText("");
-        jdcFechaCompra.setDate(null);
-        jdcFin.setDate(null);
-        txtVida.setText("");
-        txtLibros.setText("");
-        txtPendiente.setText("");
+        // 4️⃣ Insertar la primera cuota automáticamente
+        String sqlCuota = "INSERT INTO cuota (numerocuota, monto, estado, idlicencia) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement psCuota = con.prepareStatement(sqlCuota)) {
+            psCuota.setInt(1, 1); // primera cuota
+            psCuota.setDouble(2, costo);
+            psCuota.setString(3, "Pendiente"); // estado inicial
+            psCuota.setInt(4, idLicenciaGenerado);
+            psCuota.executeUpdate();
+        }
 
-        // Cerrar ventana
+        JOptionPane.showMessageDialog(this, "✅ Licencia y primera cuota guardadas exitosamente.");
+
+        // 5️⃣ Abrir menú de gestión de licencias
+        menu_gestion_license menu = new menu_gestion_license();
+        menu.setVisible(true);
         this.dispose();
 
-        ps.close();
         con.close();
 
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(this, "⚠️ Verifica que todos los campos numéricos estén correctamente llenos.");
-    } catch (NullPointerException ex) {
-        JOptionPane.showMessageDialog(this, "⚠️ Asegúrate de seleccionar ambas fechas.");
     } catch (SQLException ex) {
-        Logger.getLogger(create_license.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(this, "❌ Error al guardar la licencia o cuota:\n" + ex.getMessage());
+        ex.printStackTrace();
     }
-
 
     }//GEN-LAST:event_button1ActionPerformed
 
@@ -303,14 +285,10 @@ public class create_license extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JComboBox<String> jcbLicencia;
     private com.toedter.calendar.JDateChooser jdcFechaCompra;
     private com.toedter.calendar.JDateChooser jdcFin;
     private javax.swing.JTextField txtCosto;
-    private javax.swing.JTextField txtLibros;
-    private javax.swing.JTextField txtPendiente;
     private javax.swing.JTextField txtVida;
     // End of variables declaration//GEN-END:variables
 }

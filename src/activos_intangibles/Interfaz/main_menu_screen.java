@@ -54,7 +54,7 @@ public class main_menu_screen extends javax.swing.JFrame {
             }
         });
 
-        jcbGestion_Administracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrar Informacion Contable", "Mostrar Amortizaciones" }));
+        jcbGestion_Administracion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gestion de Licencias", "Administrar Informacion Contable", " " }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

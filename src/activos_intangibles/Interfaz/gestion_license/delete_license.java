@@ -4,6 +4,7 @@
  */
 package activos_intangibles.Interfaz.gestion_license;
 
+import static AdministrarInformacionContable.ConexionBD.conectar;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -171,11 +172,8 @@ private javax.swing.JTable jtVista;
         modelo.addColumn("Valor pendiente");
 
         try {
-            Connection con = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5433/Activos_Intangibles",
-                "postgres",
-                "255623"
-            );
+            //concexion a la base de datos
+            Connection con = conectar();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT idlicencia,tipolicencia, costo, fechacompra, fechafin, vidautil, valorenlibros, valorpendientes FROM licencia");
 
@@ -223,11 +221,8 @@ private javax.swing.JTable jtVista;
             return;
         }
 
-        Connection con = DriverManager.getConnection(
-            "jdbc:postgresql://localhost:5433/Activos_Intangibles",
-            "postgres",
-            "255623"
-        );
+        //conexion base de datos
+        Connection con = conectar();
 
         String sql = "DELETE FROM licencia WHERE idlicencia = ?";
         PreparedStatement ps = con.prepareStatement(sql);
